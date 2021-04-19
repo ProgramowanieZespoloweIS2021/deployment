@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: offers
+  namespace: eszop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: offers
+  template:
+    metadata:
+      labels:
+        app: offers
+    spec:
+      containers:
+      - name: offers
+        image: arokasprz100/offers-service:latest
+        resources:
+          limits:
+            memory: "300Mi"
+            cpu: "200m"
+        ports:
+        - name: port
+          containerPort: 8080
+        env:
+        - name: POSTGRES_HOST
+          value: "eszop-db-service"
+        - name: POSTGRES_PORT
+          value: "5432"
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              key: user
+              name: postgres-user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: postgres-password
+        
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: offers-service
+  namespace: eszop
+spec:
+  selector:
+    app: offers
+  ports:
+  - name: port
+    port: 80
+    targetPort: 8080

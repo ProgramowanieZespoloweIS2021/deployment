@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orders
+  namespace: eszop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: orders
+  template:
+    metadata:
+      labels:
+        app: orders
+    spec:
+      containers:
+      - name: orders
+        image: loniowsky/orders-service:latest
+        resources:
+          limits:
+            memory: "300Mi"
+            cpu: "200m"
+        ports:
+        - name: port
+          containerPort: 8080
+        env:
+        - name: POSTGRES_HOSTNAME
+          value: "eszop-db-service"
+        - name: POSTGRES_PORT
+          value: "5432"
+        - name: SERVICE_PORT
+          value: "8080"
+        - name: OFFERS_HOSTNAME
+          value: "offers-service"
+        - name: OFFERS_PORT
+          value: "80"
+        - name: POSTGRES_USERNAME
+          valueFrom:
+            secretKeyRef:
+              key: user
+              name: postgres-user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: postgres-password
+        
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: orders-service
+  namespace: eszop
+spec:
+  selector:
+    app: orders
+  ports:
+  - name: port
+    port: 80
+    targetPort: 8080
+

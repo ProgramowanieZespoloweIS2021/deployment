@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eszop-db
+  namespace: eszop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eszop-db
+  template:
+    metadata:
+      labels:
+        app: eszop-db
+    spec:
+      containers:
+      - name: eszop-db
+        image: postgres
+        resources:
+          limits:
+            memory: "400Mi"
+            cpu: "400m"
+        ports:
+        - name: port
+          containerPort: 5432
+        volumeMounts:
+        - name: eszopdb-persistent-storage
+          mountPath: /var/lib/postgresql
+        env:
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              key: user
+              name: postgres-user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: postgres-password
+      volumes:
+        - name: eszopdb-persistent-storage
+          persistentVolumeClaim:
+            claimName: eszopdb-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eszop-db-service
+  namespace: eszop
+spec:
+  selector:
+    app: eszop-db
+  ports:
+  - name: port
+    port: 5432
+    targetPort: 5432
