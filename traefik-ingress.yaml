@@ -35,3 +35,7 @@ spec:
         backend:
           serviceName: offers-service
           servicePort: port
+      - path: /cart-service
+        backend:
+          serviceName: cart-service
+          servicePort: port
