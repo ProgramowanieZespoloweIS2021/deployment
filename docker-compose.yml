@@ -16,12 +16,12 @@ services:
   orders:
     image: loniowsky/orders-service:latest
     environment:
-      - POSTGRES_HOSTNAME=eszopdb
+      - POSTGRES_HOST=eszopdb
       - POSTGRES_PORT=5432
-      - POSTGRES_USERNAME=admin
+      - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin
       - SERVICE_PORT=8080
-      - OFFERS_HOSTNAME=offers
+      - OFFERS_HOST=offers
       - OFFERS_PORT=8080
     ports:
       - "8081:8080"
