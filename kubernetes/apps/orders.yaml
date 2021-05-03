@@ -18,23 +18,23 @@ spec:
         image: loniowsky/orders-service:latest
         resources:
           limits:
-            memory: "300Mi"
-            cpu: "200m"
+            memory: "600Mi"
+            cpu: "400m"
         ports:
         - name: port
           containerPort: 8080
         env:
-        - name: POSTGRES_HOSTNAME
+        - name: POSTGRES_HOST
           value: "eszop-db-service"
         - name: POSTGRES_PORT
           value: "5432"
         - name: SERVICE_PORT
           value: "8080"
-        - name: OFFERS_HOSTNAME
+        - name: OFFERS_HOST
           value: "offers-service"
         - name: OFFERS_PORT
           value: "80"
-        - name: POSTGRES_USERNAME
+        - name: POSTGRES_USER
           valueFrom:
             secretKeyRef:
               key: user

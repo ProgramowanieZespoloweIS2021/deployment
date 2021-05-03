@@ -1,0 +1,73 @@
+version: "2.1"
+services:
+  offers:
+    image: arokasprz100/offers-service:latest
+    environment:
+      - POSTGRES_HOST=eszopdb
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - SERVICE_PORT=8080
+    ports:
+      - "8080:8080"
+    depends_on:
+      eszopdb:
+        condition: service_healthy
+  orders:
+    image: loniowsky/orders-service:latest
+    environment:
+      - POSTGRES_HOST=eszopdb
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - SERVICE_PORT=8080
+      - OFFERS_HOST=offers
+      - OFFERS_PORT=8080
+    ports:
+      - "8081:8080"
+    depends_on:
+      eszopdb:
+        condition: service_healthy
+  cart:
+    image: arokasprz100/cart-service:latest
+    environment:
+      - POSTGRES_HOST=eszopdb
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - SERVICE_PORT=8080
+      - OFFERS_HOST=offers
+      - OFFERS_PORT=8080
+      - ORDERS_HOST=orders
+      - ORDERS_PORT=8080
+    ports:
+      - "8082:8080"
+    depends_on:
+      eszopdb:
+        condition: service_healthy
+  users:
+    image: loniowsky/users-service:latest
+    environment:
+      - SERVICE_PORT=8080
+    ports:
+      - "8083:8080"
+  authentication:
+    image: loniowsky/authentication-service:latest
+    environment:
+      - USERS_HOST=users
+      - USERS_PORT=8080
+      - SERVICE_PORT=8080
+    ports:
+      - "8084:8080"
+  eszopdb:
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin"]
+      interval: 20s
+      timeout: 5s
+      retries: 5

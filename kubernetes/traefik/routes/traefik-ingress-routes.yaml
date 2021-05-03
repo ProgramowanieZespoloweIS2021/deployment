@@ -1,0 +1,86 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: auth-middleware
+spec:
+  forwardAuth:
+    address: http://auth-service/test
+    trustForwardHeader: true
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ordersroute
+  namespace: eszop
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: PathPrefix(`/orders`)
+      kind: Rule
+      services:
+        - name: orders-service
+          port: 80
+      middlewares:
+        - name: auth-middleware
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: authroute
+  namespace: eszop
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: PathPrefix(`/test`) || PathPrefix(`/auth`)
+      kind: Rule
+      services:
+        - name: auth-service
+          port: 80
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: usersroute
+  namespace: eszop
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: PathPrefix(`/users`)
+      kind: Rule
+      services:
+        - name: users-service
+          port: 80
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: offersroute
+  namespace: eszop
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: PathPrefix(`/offers`)
+      kind: Rule
+      services:
+        - name: offers-service
+          port: 80
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: cartroute
+  namespace: eszop
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: PathPrefix(`/carts`)
+      kind: Rule
+      services:
+        - name: carts-service
+          port: 80
