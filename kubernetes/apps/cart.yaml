@@ -18,8 +18,8 @@ spec:
         image: arokasprz100/cart-service:latest
         resources:
           limits:
-            memory: "600Mi"
-            cpu: "400m"
+            memory: "500Mi"
+            cpu: "300m"
         ports:
         - name: port
           containerPort: 8080

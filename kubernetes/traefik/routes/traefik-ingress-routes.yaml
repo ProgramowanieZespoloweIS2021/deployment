@@ -4,7 +4,7 @@ metadata:
   name: auth-middleware
 spec:
   forwardAuth:
-    address: http://auth-service/test
+    address: http://auth-service/auth/user
     trustForwardHeader: true
 ---
 apiVersion: traefik.containo.us/v1alpha1

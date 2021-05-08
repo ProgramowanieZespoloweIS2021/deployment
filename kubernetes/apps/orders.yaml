@@ -16,10 +16,20 @@ spec:
       containers:
       - name: orders
         image: loniowsky/orders-service:latest
+        livenessProbe:
+          httpGet:
+            path: /actuator/health/liveness
+            port: 8080
+          initialDelaySeconds: 60
+        readinessProbe:
+          httpGet:
+            path: /actuator/health/readiness
+            port: 8080
+          initialDelaySeconds: 60
         resources:
           limits:
-            memory: "600Mi"
-            cpu: "400m"
+            memory: "500Mi"
+            cpu: "300m"
         ports:
         - name: port
           containerPort: 8080
