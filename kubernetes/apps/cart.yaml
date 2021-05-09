@@ -34,6 +34,10 @@ spec:
           value: "orders-service"
         - name: ORDERS_PORT
           value: "80"
+        - name: PAYMENT_HOST
+          value: "payment-service"
+        - name: PAYMENT_PORT
+          value: "80"
         - name: POSTGRES_HOST
           value: "eszop-db-service"
         - name: POSTGRES_PORT

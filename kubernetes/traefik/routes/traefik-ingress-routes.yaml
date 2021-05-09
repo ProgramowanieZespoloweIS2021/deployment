@@ -84,3 +84,18 @@ spec:
       services:
         - name: carts-service
           port: 80
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: paymentroute
+  namespace: eszop
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: PathPrefix(`/payments`)
+      kind: Rule
+      services:
+        - name: payment-service
+          port: 80
