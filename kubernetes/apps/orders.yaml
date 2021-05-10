@@ -44,6 +44,10 @@ spec:
           value: "offers-service"
         - name: OFFERS_PORT
           value: "80"
+        - name: USERS_HOST
+          value: "users-service"
+        - name: USERS_PORT
+          value: "80"
         - name: POSTGRES_USER
           valueFrom:
             secretKeyRef:

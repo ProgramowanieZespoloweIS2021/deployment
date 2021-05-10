@@ -23,6 +23,8 @@ services:
       - SERVICE_PORT=8080
       - OFFERS_HOST=offers
       - OFFERS_PORT=8080
+      - USERS_HOST=users
+      - USERS_PORT=8080
     ports:
       - "8081:8080"
     depends_on:
