@@ -14,3 +14,4 @@ and wait for about 20 seconds. To access services from the host, use following p
  - `8083` for users service
  - `8084` for authentication service
  - `8085` for payment service
+ - `8086` for chat service
