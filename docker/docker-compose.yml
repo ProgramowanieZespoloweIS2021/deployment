@@ -108,3 +108,14 @@ services:
       interval: 20s
       timeout: 5s
       retries: 5
+  frontend:
+    image: loniowsky/eszop-frontend:latest
+    environment:
+      - AUTH_SERVICE_URL=http://users:8080
+      - OFFERS_SERVICE_URL=http://offers:8080
+      - ORDERS_SERVICE_URL=http://orders:8080
+      - CART_SERVICE_URL=http://cart:8080
+      - CHAT_SERVICE_URL=http://chat:8080
+      - CHAT_SERVICE_WS_URL=ws://chat:8080
+    ports:
+      - "9999:80"

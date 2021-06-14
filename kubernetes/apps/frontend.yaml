@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authentication
+  namespace: eszop
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: loniowsky/eszop-frontend:latest
+          resources:
+            limits:
+              memory: "500Mi"
+              cpu: "300m"
+          ports:
+            - name: port
+              containerPort: 80
+          env:
+            - name: AUTH_SERVICE_URL
+              value: http://users-service
+            - name: OFFERS_SERVICE_URL
+              value: http://offers-service
+            - name: ORDERS_SERVICE_URL
+              value: http://orders-service
+            - name: CART_SERVICE_URL
+              value: http://cart-service
+            - name: CHAT_SERVICE_URL
+              value: http://chat-service
+            - name: CHAT_SERVICE_WS_URL
+              value: ws://chat-service
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-service
+  namespace: eszop
+spec:
+  selector:
+    app: authentication
+  ports:
+    - name: port
+      port: 80
+      targetPort: 80
