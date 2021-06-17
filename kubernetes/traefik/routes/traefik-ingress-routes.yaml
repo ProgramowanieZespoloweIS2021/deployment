@@ -16,6 +16,11 @@ spec:
   entryPoints:
     - web
   routes:
+    - match: PathPrefix(`/orders`) && Method(`OPTIONS`)
+      kind: Rule
+      services:
+        - name: orders-service
+          port: 80
     - match: PathPrefix(`/orders`)
       kind: Rule
       services:
@@ -103,16 +108,14 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: paymentroute
+  name: chatroute
   namespace: eszop
 spec:
   entryPoints:
     - web
   routes:
-    - match: PathPrefix(`/chats`)
+    - match: PathPrefix(`/chats`) || PathPrefix(`/ws`) || PathPrefix(`/messages`) || PathPrefix(`/chat`)
       kind: Rule
       services:
         - name: chat-service
           port: 80
-      middlewares:
-        - name: auth-middleware

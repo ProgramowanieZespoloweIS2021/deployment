@@ -26,6 +26,20 @@ spec:
           env:
             - name: SERVICE_PORT
               value: "8080"
+            - name: POSTGRES_HOST
+              value: "eszop-db-service"
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  key: user
+                  name: postgres-user
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: password
+                  name: postgres-password
 
 ---
 apiVersion: v1
